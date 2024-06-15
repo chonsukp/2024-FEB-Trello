@@ -2,14 +2,14 @@ from init import db, ma
 
 class User(db.Model):
     # name if the table
-    __tablename__ = "Users"
+    __tablename__ = "users"
 
     # attributes of the table
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    is_admin = db.Column(db.Boolean, defualt=False) 
+    is_admin = db.Column(db.Boolean, default=False) 
 
 # create a Schema
 class UserSchema(ma.Schema):
@@ -20,4 +20,4 @@ class UserSchema(ma.Schema):
 user_schema = UserSchema(exclude=["password"])
 
 # to handle a list of user objects
-user_schema = UserSchema(many=True, exclude=["password"])
+users_schema = UserSchema(many=True, exclude=["password"])
