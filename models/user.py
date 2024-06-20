@@ -1,7 +1,9 @@
-from init import db, ma 
+from init import db, ma
+from marshmallow import fields
+
 
 class User(db.Model):
-    # name if the table
+    # name of the table
     __tablename__ = "users"
 
     # attributes of the table
@@ -9,12 +11,16 @@ class User(db.Model):
     name = db.Column(db.String)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False) 
+    is_admin = db.Column(db.Boolean, default=False)
 
-# create a Schema
+    cards = db.relationship('Card', back_populates="user")
+
+
 class UserSchema(ma.Schema):
+    cards = fields.List(fields.Nested('CardSchema', exclude=["user"]))
     class Meta:
-        fields = ("id", "name", "email", "password", "is_admin")
+        fields = ("id", "name", "email", "password", "is_admin", "cards")
+
 
 # to handle a single user object
 user_schema = UserSchema(exclude=["password"])
