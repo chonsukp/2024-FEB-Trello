@@ -1,6 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
+
 class Card(db.Model):
     __tablename__ = "cards"
 
@@ -14,7 +15,8 @@ class Card(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     user = db.relationship('User', back_populates='cards')
-    comments = db.relationship('Comment', back_populates='card', cascade="all, delete")
+    comments = db.relationship("Comment", back_populates="card", cascade="all, delete")
+
 
     # {
     #     id: 1,
@@ -31,16 +33,21 @@ class Card(db.Model):
     #   }
     # }
 
-
 class CardSchema(ma.Schema):
 
     user = fields.Nested('UserSchema', only=["id", "name", "email"])
-    comments = fields.Nested('CommentSchema', exclude=["card"])
+    comments = fields.List(fields.Nested("CommentSchema", exclude=["card"]))
 
     class Meta:
-        fields = ( "id", "title", "description", "date", "status", "priority", "user", "comment" )
-
+        fields = ( "id", "title", "description", "date", "status", "priority", "user", "comments" )
+        ordered = True
 
 card_schema = CardSchema()
 cards_schema = CardSchema(many=True)
+
+
+
+
+
+
 
