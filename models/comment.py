@@ -25,5 +25,3 @@ class CommentSchema(ma.Schema):
 comment_schema = CommentSchema()
 comments_schema = CommentSchema(many=True)
 
-
-
