@@ -7,7 +7,9 @@ from models.user import User
 from models.card import Card
 from models.comment import Comment
 
+
 db_commands = Blueprint("db", __name__)
+
 
 @db_commands.cli.command("create")
 def create_tables():
